@@ -2,11 +2,11 @@ use std::collections::HashMap;
 
 fn infix_to_postfix(expression: &str) -> Vec<String> {
     let precedence = |op: &str| match op {
-        "~" => 4,
-        "&" => 3,
-        "^" => 2,
-        "|" => 1,
-        "-" => 0,
+        "~" => 5,
+        "&" => 4,
+        "^" => 3,
+        "|" => 2,
+        "-" => 1,
         "=" => 0,
         _ => -1,
     };
