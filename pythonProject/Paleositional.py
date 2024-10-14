@@ -5,18 +5,14 @@ from pprint import pprint
 import numpy as np
 import pandas as pd
 
-from icecream import ic
-
-precedence = {'~': 5, '&': 4, '^': 3, '|': 2, '-': 1, '=': 0}
-
-
-def has_higher_precedence(op1: str, op2: str) -> bool:
-    return (precedence[op1] > precedence[op2]) or (precedence[op1] == precedence[op2] and precedence[op1] < 4)
-
 
 def infix_to_postfix(expression: str) -> List[str]:
+    precedence = {'~': 4, '&': 3, '^': 2.5, '|': 2, '-': 1, '=': 0}
     output: List[str] = []
     operators: List[str] = []
+
+    def has_higher_precedence(op1: str, op2: str) -> bool:
+        return (precedence[op1] > precedence[op2]) or (precedence[op1] == precedence[op2] and precedence[op1] < 4)
 
     for char in expression:
         if char.isalnum():
@@ -83,8 +79,9 @@ class PExp:
         return self._variable
 
     @property
-    def key_elements(self) -> Dict[str, np.ndarray]:
-        return self._key_elements
+    def key_elements(self) -> Dict[str, List[bool]]:
+        rizz = dict(zip(self._key_elements.keys(), [arr.tolist() for arr in self._key_elements.values()]))
+        return rizz
 
     def solve(self) -> 'PExp':
         solve_stack: List[str] = []
@@ -141,13 +138,17 @@ class PExp:
     def _to_pandas(self) -> pd.DataFrame:
         return pd.DataFrame(self._key_elements)
 
+    @property
+    def df(self) -> pd.DataFrame:
+        return self._df.astype("int8")
+
     def where(self, **kwargs) -> pd.DataFrame:
         con: np.ndarray = np.ones(2 ** self._num_var, dtype=bool)
 
         for k, v in kwargs.items():
             con &= (self._key_elements[k] == v)
 
-        return self._df[con]
+        return self._df[con].astype("int8")
 
     def __eq__(self, other: 'PExp') -> bool:
         return all(self.final_answer() == other.final_answer())
@@ -155,33 +156,7 @@ class PExp:
 
 if __name__ == "__main__":
     # exp0 = PExp("a&b-c|d").solve().show_table()
-    # e0 = PExp("~a").solve().show_table()
+    # e0 = PExp("a").solve().show_table()
     # exp1 = PExp("~(a&b)|(c|d)").solve().show_table()
-    #
     # print(exp0.where(b=1, c=0).to_markdown(), '\n')
-    #
-    #
-    #
-    # x = itertools.chain.from_iterable([[True] * 4 + [False] * 4] * 1)
-    # y = [[True] * 2 + [False] * 2] * 2
-    # z = list(itertools.chain.from_iterable([[True] * 1 + [False] * 1] * 4))
-    # ic(x)
-    # ic(y)
-    # ic(z)
-    # ic(np.array([True, False, True]) & np.array([False, True, False]))
-
-    # e = PExp("p=~p").solve().show_table()
-
-    e0 = PExp("p-q").solve().show_table()
-    e1 = PExp("~p-~q").solve().show_table()
-    ic(e0 == e1)
-
-
-
-
-
-
-
-
-
-
+    print(PExp("a-b&c-k|p^x").solve().where(x=1, c=0, b=1, a=1, p=0, k=1).to_markdown())
