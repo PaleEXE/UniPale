@@ -1,1 +1,1 @@
-F:\UniPale\Test\target\debug\Test.exe: F:\UniPale\Test\src\main.rs
+F:\UniPale\Rustositional\target\debug\Test.exe: F:\UniPale\Rustositional\src\main.rs

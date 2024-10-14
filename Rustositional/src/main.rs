@@ -1,4 +1,3 @@
-use itertools::Itertools;
 use std::collections::HashMap;
 
 fn infix_to_postfix(expression: &str) -> Vec<String> {
@@ -66,27 +65,40 @@ impl PExp {
     }
 
     fn chars(&self) -> Vec<String> {
+        let mut seen = Vec::new();
         self.expression
             .chars()
             .filter(|c| c.is_alphanumeric())
             .map(|c| c.to_string())
+            .filter(|c| {
+                if seen.contains(c) {
+                    false
+                } else {
+                    seen.push(c.clone());
+                    true
+                }
+            })
             .collect()
     }
 
     fn build_table(&mut self) -> HashMap<String, Vec<bool>> {
-        self.num_var = self.variable.iter().cloned().unique().count();
-        let mut rizz = HashMap::new();
-        for (i, var) in self.variable.iter().unique().enumerate() {
+        self.num_var = self.variable.len();
+        let mut table = HashMap::new();
+        for (i, var) in self.variable.iter().enumerate() {
             let j = 2_usize.pow((i + 1) as u32);
-            let pattern: Vec<bool> = vec![true; 2_usize.pow(self.num_var as u32) / j]
-                .into_iter()
-                .chain(vec![false; 2_usize.pow(self.num_var as u32) / j])
-                .cycle()
-                .take(2_usize.pow(self.num_var as u32))
-                .collect();
-            rizz.insert(var.clone(), pattern);
+            let mut pattern = Vec::new();
+            let mut flag = true;
+
+            while pattern.len() < 2_usize.pow(self.num_var as u32) {
+                for _ in 0..(2_usize.pow(self.num_var as u32) / j) {
+                    pattern.push(flag);
+                }
+                flag = !flag;
+            }
+
+            table.insert(var.clone(), pattern);
         }
-        rizz
+        table
     }
 
     fn solve(&mut self) {
@@ -145,7 +157,14 @@ impl PExp {
 
     fn show(&self) {
         for (key, value) in &self.key_elements {
-            print!("{}: {:?}\n", key, value);
+            print!(
+                "{}: {:?}\n",
+                key,
+                value
+                    .iter()
+                    .map(|x| if *x { 1 } else { 0 })
+                    .collect::<Vec<u8>>()
+            );
         }
     }
 
