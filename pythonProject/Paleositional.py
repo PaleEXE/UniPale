@@ -7,14 +7,16 @@ import pandas as pd
 
 from icecream import ic
 
+precedence = {'~': 5, '&': 4, '^': 3, '|': 2, '-': 1, '=': 0}
+
+
+def has_higher_precedence(op1: str, op2: str) -> bool:
+    return (precedence[op1] > precedence[op2]) or (precedence[op1] == precedence[op2] and precedence[op1] < 4)
+
 
 def infix_to_postfix(expression: str) -> List[str]:
-    precedence = {'~': 4, '&': 3, '^': 2.5, '|': 2, '-': 1, '=': 0}
     output: List[str] = []
     operators: List[str] = []
-
-    def has_higher_precedence(op1: str, op2: str) -> bool:
-        return (precedence[op1] > precedence[op2]) or (precedence[op1] == precedence[op2] and precedence[op1] < 4)
 
     for char in expression:
         if char.isalnum():
@@ -151,18 +153,35 @@ class PExp:
         return all(self.final_answer() == other.final_answer())
 
 
-exp0 = PExp("a&b-c|d").solve().show_table()
-# e0 = PExp("~~a~").solve().show_table()
-exp1 = PExp("~(a&b)|(c|d)").solve().show_table()
-#
-# print(exp0.where(b=1, c=0).to_markdown(), '\n')
-#
-ic(exp0 == exp1)
+if __name__ == "__main__":
+    # exp0 = PExp("a&b-c|d").solve().show_table()
+    # e0 = PExp("~a").solve().show_table()
+    # exp1 = PExp("~(a&b)|(c|d)").solve().show_table()
+    #
+    # print(exp0.where(b=1, c=0).to_markdown(), '\n')
+    #
+    #
+    #
+    # x = itertools.chain.from_iterable([[True] * 4 + [False] * 4] * 1)
+    # y = [[True] * 2 + [False] * 2] * 2
+    # z = list(itertools.chain.from_iterable([[True] * 1 + [False] * 1] * 4))
+    # ic(x)
+    # ic(y)
+    # ic(z)
+    # ic(np.array([True, False, True]) & np.array([False, True, False]))
 
-# x = itertools.chain.from_iterable([[True] * 4 + [False] * 4] * 1)
-# y = [[True] * 2 + [False] * 2] * 2
-# z = list(itertools.chain.from_iterable([[True] * 1 + [False] * 1] * 4))
-# ic(x)
-# ic(y)
-# ic(z)
-# ic(np.array([True, False, True]) & np.array([False, True, False]))
+    # e = PExp("p=~p").solve().show_table()
+
+    e0 = PExp("p-q").solve().show_table()
+    e1 = PExp("~p-~q").solve().show_table()
+    ic(e0 == e1)
+
+
+
+
+
+
+
+
+
+

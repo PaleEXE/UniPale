@@ -7,6 +7,7 @@ import json
 import nltk
 from icecream import ic
 
+
 stemmer = nltk.stem.snowball.SnowballStemmer("english")
 
 
@@ -32,7 +33,8 @@ def save(path: str, data: dict) -> None:
         json.dump(data, j_file, indent=4)
 
 
-if __name__ == '__main_':
+if __name__ == '__main__':
+
     glob_folder = 'Modern Talking'
     songs_list = glob.glob(f'{glob_folder}/*.txt')
 
@@ -48,5 +50,3 @@ if __name__ == '__main_':
                 'Words': dict(count)
             }
             save(f'{glob_folder} (Processed)\\{name}.json', out)
-
-

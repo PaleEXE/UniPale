@@ -22,12 +22,12 @@ if __name__ == '__main__':
     client = pymongo.MongoClient()
     db = client.SONGS
 
-    glob_folder = r'F:\pale_python\Modern Talking (Processed)'
+    glob_folder = r'Modern Talking (Processed)'
     songs_list = glob.glob(f'{glob_folder}/*.json')
-
+    db.drop_collection('songs')
     for song in songs_list:
         data = read(song)
         direct = ''.join(list(filter(lambda x: str.isalpha(x) or (x == '_'), list(data['Name'].replace(' ', '_')))))
         print(direct)
-        upload(db[f'Modern_Talking'], direct, data)
+        upload(db['Modern_Talking'], direct, data)
 

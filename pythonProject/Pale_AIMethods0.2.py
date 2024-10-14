@@ -2,6 +2,7 @@ from collections import deque
 
 import networkx as nx
 import matplotlib.pyplot as plt
+from icecream import ic
 
 
 class AIMethods(nx.Graph):
@@ -48,7 +49,7 @@ class AIMethods(nx.Graph):
             if node in visited:
                 continue
 
-            order.extend(self.dfs(start_node=node, visited=visited))
+            order.extend(AIMethods.dfs(self, start_node=node, visited=visited))
 
         return order
 
@@ -74,7 +75,6 @@ class AIMethods(nx.Graph):
                 pos,
                 node_size=node_size,
                 alpha=0.9,
-
                 edgecolors=[
                     'green' if n == node else
                     'pink' if n in visited else 'red'
@@ -92,7 +92,6 @@ class AIMethods(nx.Graph):
                 pos,
                 width=node_size // 40,
                 alpha=0.5,
-
                 edge_color=[
                     'tab:purple' if e[1] in visited else 'tab:red'
                     for e in self.edges
