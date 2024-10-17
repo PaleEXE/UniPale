@@ -154,42 +154,42 @@ impl PExp {
     }
 
     fn apply_op(&self, elem: &String, right: &String, left: &String) -> Vec<bool> {
-    let pairs = self.key_elements[left]
-        .iter()
-        .zip(&self.key_elements[right]);
-
-    let rizz = match elem.as_str() {
-        "&" => pairs.map(|(l, r)| *l && *r).collect(),
-        "|" => pairs.map(|(l, r)| *l || *r).collect(),
-        "^" => pairs.map(|(l, r)| *l ^ *r).collect(),
-        "=" => pairs.map(|(l, r)| l == r).collect(),
-        "-" => pairs.map(|(l, r)| !l || *r).collect(),
-        _ => panic!("Invalid expression: {}", self.expression),
-    };
-    rizz
-}
-    fn show_table(&self) {
-    let mut sorted_elements: Vec<_> = self.key_elements.iter().collect();
-    sorted_elements.sort_by_key(|&(key, _)| key.len());
-
-    let max_key_length = sorted_elements.last().map_or(0, |(key, _)| key.len());
-
-    println!("\n\n");
-
-    for (var, _) in &sorted_elements {
-        print!("| {:width$} ", var, width = max_key_length);
+        let pairs = self.key_elements[left]
+            .iter()
+            .zip(&self.key_elements[right]);
+    
+        let rizz = match elem.as_str() {
+            "&" => pairs.map(|(l, r)| *l && *r).collect(),
+            "|" => pairs.map(|(l, r)| *l || *r).collect(),
+            "^" => pairs.map(|(l, r)| *l ^ *r).collect(),
+            "=" => pairs.map(|(l, r)| l == r).collect(),
+            "-" => pairs.map(|(l, r)| !l || *r).collect(),
+            _ => panic!("Invalid expression: {}", self.expression),
+        };
+        rizz
     }
-    println!("|");
-
-    println!("{}-", "-".repeat((max_key_length + 3) * sorted_elements.len()));
-
-    for i in 0..2_usize.pow(self.num_var as u32) {
-        for (_, vec) in &sorted_elements {
-            print!("| {:<width$} ", vec[i] as u8, width = max_key_length);
+    fn show_table(&self) {
+        let mut sorted_elements: Vec<_> = self.key_elements.iter().collect();
+        sorted_elements.sort_by_key(|&(key, _)| key.len());
+    
+        let max_key_length = sorted_elements.last().map_or(0, |(key, _)| key.len());
+    
+        println!("\n\n");
+    
+        for (var, _) in &sorted_elements {
+            print!("| {:width$} ", var, width = max_key_length);
         }
         println!("|");
+    
+        println!("{}-", "-".repeat((max_key_length + 3) * sorted_elements.len()));
+    
+        for i in 0..2_usize.pow(self.num_var as u32) {
+            for (_, vec) in &sorted_elements {
+                print!("| {:<width$} ", vec[i] as u8, width = max_key_length);
+            }
+            println!("|");
+        }
     }
-}
     fn show(&self) {
         let mut sorted_elements = self.key_elements.iter().collect::<Vec<(&String, &Vec<bool>)>>();
         sorted_elements.sort_by_key(|&(key, _)| key.len());
