@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/.idea/pale_ir.iml" filepath="$PROJECT_DIR$/.idea/pale_ir.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/.idea/UniPale.iml" filepath="$PROJECT_DIR$/.idea/UniPale.iml" />
+>>>>>>> 0c8a170e56de92543245553c06d5c4205995944e
     </modules>
   </component>
 </project>

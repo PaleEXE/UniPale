@@ -1,0 +1,33 @@
+[
+    {
+        "ID": 0,
+        "name": "Mohammad",
+        "categories": {
+            "comedy": 10.0,
+            "romance": 9.0
+        },
+        "birth_year": 2004,
+        "gender": false
+    },
+    {
+        "ID": 1,
+        "name": "Hamza",
+        "categories": {
+            "action": 7.0,
+            "comedy": 6.0,
+            "adventure": 10.0
+        },
+        "birth_year": 2006,
+        "gender": false
+    },
+    {
+        "ID": 2,
+        "name": "Soso",
+        "categories": {
+            "tragedy": 7.0,
+            "romance": 10.0
+        },
+        "birth_year": 2000,
+        "gender": true
+    }
+]

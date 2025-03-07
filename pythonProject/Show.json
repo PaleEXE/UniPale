@@ -1,0 +1,66 @@
+[
+    {
+        "ID": 0,
+        "name": "JOJO's Bizarre Adventure",
+        "categories": {
+            "action": 10.0,
+            "comedy": 10.0,
+            "adventure": 10.0,
+            "tragedy": 9.0
+        },
+        "stars": 5.0,
+        "release_year": 2012
+    },
+    {
+        "ID": 1,
+        "name": "One Piece",
+        "categories": {
+            "action": 5.0,
+            "comedy": 1.0,
+            "adventure": 8.0
+        },
+        "stars": 4,
+        "release_year": 1999
+    },
+    {
+        "ID": 2,
+        "name": "Your Lie in April",
+        "categories": {
+            "tragedy": 10.0,
+            "romance": 10.0
+        },
+        "stars": 4.5,
+        "release_year": 2014
+    },
+    {
+        "ID": 3,
+        "name": "The Dark Knight",
+        "categories": {
+            "action": 9.0,
+            "tragedy": 7.0
+        },
+        "stars": 5.0,
+        "release_year": 2008
+    },
+    {
+        "ID": 4,
+        "name": "Dumb and Dumber",
+        "categories": {
+            "comedy": 10.0,
+            "adventure": 4.0
+        },
+        "stars": 3,
+        "release_year": 1994
+    },
+    {
+        "ID": 5,
+        "name": "FM A BH",
+        "categories": {
+            "action": 100.0,
+            "comedy": 5.0,
+            "tragedy": 9.0
+        },
+        "stars": 4,
+        "release_year": 2023
+    }
+]
