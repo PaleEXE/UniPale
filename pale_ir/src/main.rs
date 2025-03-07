@@ -15,7 +15,7 @@ fn main() {
     let loaded_index = inverted_index::InvertedIndex::load("inverted_index.json")
         .unwrap();
 
-    for res in loaded_index.search("love") {
+    for res in loaded_index.search("sea") {
         println!("Song: {}\nScore: {}\n", res.0, res.1);
     }
     println!("Time it took: {:?}", start.elapsed())

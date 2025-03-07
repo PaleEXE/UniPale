@@ -1,6 +1,7 @@
 use std::fs;
 use std::io;
 
+#[allow(dead_code)]
 pub fn read_dir(path: &str) -> io::Result<Vec<String>> {
     let mut files = Vec::new();
     for entry in fs::read_dir(path)? {
