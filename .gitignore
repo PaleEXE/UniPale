@@ -1,0 +1,58 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+.venv/
+
+# Environment variables
+.env
+*.env
+
+# Logs and debug files
+logs/
+*.log
+debug.log
+nohup.out
+
+# Cache
+*.cache
+*.pyc
+*.pyo
+
+# Editor & IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Rust target directory
+target/
+**/target/
+Cargo.lock  # Optional, remove if you want to track Cargo.lock for applications
+
+# Rust debug & build artifacts
+*.rs.bk
+*.rlib
+*.d
+*.so
+*.dylib
+*.exe
+*.out
+*.a
+
+# Rust dependency files
+/.cargo/
+cargo-cache/
+
+# Keep JSON files tracked
+!*.json
