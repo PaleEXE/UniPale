@@ -110,9 +110,9 @@ class InvertedIndex:
 
         return self.documents_map.get(str(doc_id))
 
-    def print_scores(self, scores: list[Tuple[int, float]]) -> None:
+    def print_scores(self, scores: list[Tuple[int, float]], file=None) -> None:
         for doc_id, score in scores:
             song = self.get_doc(doc_id).split('\\')[-1].replace('.txt', '')
-            print(f"{song:<40}{score:.3}")
+            print(f"{song:<40}{score:.3}", file=file)
 
         print()
