@@ -9,6 +9,56 @@ from typing import DefaultDict, List, Tuple, Dict
 from document import Document
 
 
+def precedence(op: str) -> int:
+    return {
+        '~': 5,
+        '&': 4,
+        '^': 3,
+        '|': 2,
+        '-': 1,
+        '=': 0
+    }.get(op, -1)
+
+
+def infix_to_postfix(expression: str) -> List[str]:
+    output = []
+    operators = []
+    current_str = ""
+
+    for char in expression:
+        if char.isalpha():
+            current_str += char
+        else:
+            if current_str:
+                output.append(current_str)
+                current_str = ""
+
+            if char in ['~', '&', '^', '|', '-', '=']:
+                while operators and precedence(operators[-1]) >= precedence(char):
+                    output.append(operators.pop())
+                operators.append(char)
+            elif char == '(':
+                operators.append(char)
+            elif char == ')':
+                while operators and operators[-1] != '(':
+                    output.append(operators.pop())
+                if not operators:
+                    raise ValueError("Unbalanced parentheses")
+                operators.pop()
+            else:
+                raise Exception(f"Invalid expression: {expression}, Nuh uh")
+
+    if current_str:
+        output.append(current_str)
+
+    while operators:
+        if operators[-1] == '(':
+            raise ValueError("Unbalanced parentheses")
+        output.append(operators.pop())
+
+    return output
+
+
 class InvertedIndex:
     def __init__(self) -> None:
         self.documents_map: Dict[int, str] = {}
