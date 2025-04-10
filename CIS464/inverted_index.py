@@ -46,13 +46,16 @@ class InvertedIndex:
         p1 = p2 = 0
 
         while p1 < len(list1) and p2 < len(list2):
-            if list1[p1] != list2[p2]:
+            if list1[p1] < list2[p2]:
                 result.append(list1[p1])
-
-            result.append(list2[p2])
-
-            p2 += 1
-            p1 += 1
+                p1 += 1
+            elif list1[p1] > list2[p2]:
+                result.append(list2[p2])
+                p2 += 1
+            else:
+                result.append(list1[p1])
+                p2 += 1
+                p1 += 1
 
         for i in range(p1, len(list1)):
             result.append(list1[i])
