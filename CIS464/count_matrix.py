@@ -1,4 +1,5 @@
-# import "Counter" to count term occurrence in a document
+# import 'Counter' to count term occurrence in a document
+import glob
 from collections import Counter
 
 import numpy as np
@@ -9,13 +10,13 @@ from utils import *
 from incidence_matrix import IncidenceMatrix
 
 
-# use inheritance to create "CountMatrix" since a lot of features are common between the two classes
+# use inheritance to create 'CountMatrix' since a lot of features are common between the two classes
 class CountMatrix(IncidenceMatrix):
     # same building method but insert count in the matrix instead of ones and zeros
     def build(self) -> None:
         incidence = dict()
         for doc_num, file_path in enumerate(self.collection):
-            with open(file_path, "r", encoding="utf-8") as f:
+            with open(file_path, 'r', encoding='utf-8') as f:
                 content = f.read()
                 words = nltk.word_tokenize(content)
 
@@ -27,7 +28,7 @@ class CountMatrix(IncidenceMatrix):
 
                 incidence[word][doc_num] = count
 
-        self.matrix = pd.DataFrame.from_dict(incidence, orient="index", columns=get_files_names(self.collection))
+        self.matrix = pd.DataFrame.from_dict(incidence, orient='index', columns=get_files_names(self.collection))
         self.matrix.sort_index(inplace=True)
 
     # search using natural language and rank retrieved documents based on term frequency (trivial solution)
@@ -40,15 +41,17 @@ class CountMatrix(IncidenceMatrix):
                 term = normalize(term)
                 scores[i][1] += self.matrix[doc].get(term, 0)
 
-
         scores = [score for score in scores if score[1] != 0]
         scores.sort(key=lambda x: x[1], reverse=True)
         return scores
 
 
-if __name__ == "__main__":
-    ct = CountMatrix('../pale_ir/songs/')
-    ct.build()
+if __name__ == '__main__':
+    ct = CountMatrix.from_folder('../pale_ir/songs/')
     print(ct.search('love CaRs'))
     print(ct.search('Messi lady'))
     print(ct.search('call'))
+    ct.save('data/count_matrix.csv')
+
+    ct2 = CountMatrix.load('data/count_matrix.csv')
+    print(ct2.search('call'))

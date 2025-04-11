@@ -12,21 +12,30 @@ from utils import *
 # class to encapsulate logic and data
 class IncidenceMatrix:
     # initial data members to compute the matrix later
-    def __init__(self, collection_path: str):
-        self.collection = glob.glob(collection_path + "*.txt")
+    def __init__(self):
+        self.collection = []
         self.matrix = pd.DataFrame([])
-        self.num_docs = len(self.collection)
+        self.num_docs = 0
+
+    # create an object from a folder
+    @classmethod
+    def from_folder(cls, folder_path: str):  # I didn't add return type for compatibility issues with py3.11 <
+        obj = cls()
+        obj.collection = glob.glob(folder_path + '*.txt')
+        obj.num_docs = len(obj.collection)
+        obj.build()
+        return obj
 
     # creat the matrix
     def build(self) -> None:
         incidence = dict()
 
         for doc_num, file_path in enumerate(self.collection):
-            with open(file_path, "r", encoding="utf-8") as f:
+            with open(file_path, 'r', encoding='utf-8') as f:
                 content = f.read()
-                terms = set(nltk.word_tokenize(content))
+                terms = nltk.word_tokenize(content)
 
-            terms = normalize_list(terms)
+            terms = set(normalize_list(terms))
 
             for term in terms:
                 if term not in incidence:
@@ -34,13 +43,17 @@ class IncidenceMatrix:
 
                 incidence[term][doc_num] = 1
 
-        self.matrix = pd.DataFrame.from_dict(incidence, orient="index", columns=get_files_names(self.collection))
+        self.matrix = pd.DataFrame.from_dict(incidence, orient='index', columns=get_files_names(self.collection))
         self.matrix.sort_index(inplace=True)
 
     # search in the matrix by applying the same preprocessing that used when building on the query
     # return list of documents which term was observed into it
     def search(self, query: str) -> list[str]:
-        query_list = nltk.word_tokenize(query)
+        query = query.replace('AND', '&') \
+            .replace('OR', '|').replace('NOT', '~').replace(' ', '')
+
+        query_list = operator_split(query)
+
         postfix_query = infix_to_postfix(query_list)
         result = self.__solve(postfix_query)
         return self.matrix.columns[result == 1].tolist()
@@ -50,27 +63,27 @@ class IncidenceMatrix:
         solve_stack = []
 
         for token in postfix_query:
-            if token not in OPERATIONS and token.isalnum():
+            if token not in OPERATIONS:
                 token = normalize(token)
                 solve_stack.append(self.get(token))
                 continue
 
-            if token == 'NOT':
-                solve_stack[-1] = ~ solve_stack[-1]
+            if token == '~':
+                solve_stack[-1] = np.logical_not(solve_stack[-1])
                 continue
 
             right = solve_stack.pop()
             left = solve_stack.pop()
 
-            if token == 'AND':
-                solve_stack.append(left & right)
-            elif token == 'OR':
-                solve_stack.append(left | right)
+            if token == '&':
+                solve_stack.append(np.logical_and(left, right))
+            elif token == '|':
+                solve_stack.append(np.logical_or(left, right))
 
         if len(solve_stack) == 1:
             return solve_stack[0]
 
-        raise Exception("Invalid query")
+        raise Exception('Invalid query')
 
     # get term vector or vector of zeros if it does not exist in the matrix
     def get(self, term) -> np.ndarray:
@@ -79,11 +92,28 @@ class IncidenceMatrix:
 
         return np.zeros(self.num_docs, dtype=np.int8)
 
+    def save(self, file_path: str) -> None:
+        self.matrix.to_csv(file_path)
 
-if __name__ == "__main__":
-    inc = IncidenceMatrix("../pale_ir/songs/")
-    inc.build()
-    print(inc.search('love AND CaRs'))
-    print(inc.search('Messi OR lady'))
-    print(inc.search('Call AND NOT phone'))
+    @classmethod
+    def load(cls, file_path: str):
+        obj = cls()
+        obj.matrix = pd.read_csv(file_path)
+        obj.matrix.set_index(obj.matrix.iloc[:, 0].values, inplace=True)
+        obj.matrix.drop(columns='Unnamed: 0', inplace=True)
+        obj.num_docs = obj.matrix.shape[1]
+        obj.collection = obj.matrix.columns
+        return obj
+
+
+if __name__ == '__main__':
+    inc = IncidenceMatrix.from_folder('../pale_ir/songs/')
+    # print(inc.search('love AND CaRs'))
+    # print(inc.search('Messi OR lady'))
+    # print(inc.search('Call AND NOT phone'))
+    # inc.save('data/incidence_matrix.csv')
+
+    inc2 = IncidenceMatrix.load('data/incidence_matrix.csv')
+    # print(inc2.search('Messi OR lady'))
+    print(inc2.search('love AND NOT(cars OR girl OR man OR dog)'))
 

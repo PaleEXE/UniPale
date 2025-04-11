@@ -1,6 +1,5 @@
 from collections import Counter
 import math
-import json
 
 from inverted_index import InvertedIndex
 
@@ -10,7 +9,7 @@ from utils import *
 class RankedIndex(InvertedIndex):
     def build(self):
         for doc_num, file_path in enumerate(self.collection):
-            with open(file_path, "r", encoding="utf-8") as f:
+            with open(file_path, 'r', encoding='utf-8') as f:
                 content = f.read()
                 terms = nltk.word_tokenize(content)
 
@@ -66,15 +65,12 @@ class RankedIndex(InvertedIndex):
         w = (math.log10(tf) + 1) * math.log10(self.num_docs / idf)
         return w
 
-    def save(self, path: str) -> None:
-        with open(path, "w", encoding="utf-8") as file:
-            json.dump(vars(self), file, ensure_ascii=False, indent=4)
 
-
-if __name__ == "__main__":
-    rki = RankedIndex("../pale_ir/songs/")
-    rki.build()
+if __name__ == '__main__':
+    rki = RankedIndex.from_folder('../pale_ir/songs/')
     print(rki.search('love CaRs'))
     print(rki.search('Messi lady'))
     print(rki.search('call'))
-    rki.save("data/ranked_index.json")
+    rki.save('data/ranked_index.json')
+    rki2 = RankedIndex.load('data/ranked_index.json')
+    print(rki2.search('call'))
