@@ -73,4 +73,4 @@ if __name__ == '__main__':
     print(rki.search('call'))
     rki.save('data/ranked_index.json')
     rki2 = RankedIndex.load('data/ranked_index.json')
-    print(rki2.search('call'))
+    print_scors(rki2.search('call'))

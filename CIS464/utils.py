@@ -100,3 +100,10 @@ def normalize(word: str) -> str:
 # eg: Eating, Government -> eat, govern
 def normalize_list(words: list) -> list[str]:
     return [normalize(word) for word in words if word.isalpha()]
+
+
+# small formated print for prettier output
+def print_scors(scores: list) -> None:
+    print(f'{"Documents:":<30}Scores')
+    for score in scores:
+        print(f' {score[0]:<30}{score[1]:.3f}')
