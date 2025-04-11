@@ -6,8 +6,8 @@ import numpy as np
 import pandas as pd
 
 # import utilies to reduce code duplication (DRY principle)
-from utils import *
-from incidence_matrix import IncidenceMatrix
+from .utils import *
+from .incidence_matrix import IncidenceMatrix
 
 
 # use inheritance to create 'CountMatrix' since a lot of features are common between the two classes
@@ -44,14 +44,3 @@ class CountMatrix(IncidenceMatrix):
         scores = [score for score in scores if score[1] != 0]
         scores.sort(key=lambda x: x[1], reverse=True)
         return scores
-
-
-if __name__ == '__main__':
-    ct = CountMatrix.from_folder('../pale_ir/songs/')
-    print(ct.search('love CaRs'))
-    print(ct.search('Messi lady'))
-    print(ct.search('call'))
-    ct.save('data/count_matrix.csv')
-
-    ct2 = CountMatrix.load('data/count_matrix.csv')
-    print(ct2.search('call'))

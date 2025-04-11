@@ -1,9 +1,8 @@
 from collections import Counter
 import math
 
-from inverted_index import InvertedIndex
-
-from utils import *
+from .utils import *
+from .inverted_index import InvertedIndex
 
 
 class RankedIndex(InvertedIndex):
@@ -64,13 +63,3 @@ class RankedIndex(InvertedIndex):
 
         w = (math.log10(tf) + 1) * math.log10(self.num_docs / idf)
         return w
-
-
-if __name__ == '__main__':
-    rki = RankedIndex.from_folder('../pale_ir/songs/')
-    print(rki.search('love CaRs'))
-    print(rki.search('Messi lady'))
-    print(rki.search('call'))
-    rki.save('data/ranked_index.json')
-    rki2 = RankedIndex.load('data/ranked_index.json')
-    print_scors(rki2.search('call'))

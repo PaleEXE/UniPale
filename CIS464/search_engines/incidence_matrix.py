@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 
 # some functions that will be used across all projects
-from utils import *
+from .utils import *
 
 
 # class to encapsulate logic and data
@@ -104,16 +104,3 @@ class IncidenceMatrix:
         obj.num_docs = obj.matrix.shape[1]
         obj.collection = obj.matrix.columns
         return obj
-
-
-if __name__ == '__main__':
-    inc = IncidenceMatrix.from_folder('../pale_ir/songs/')
-    # print(inc.search('love AND CaRs'))
-    # print(inc.search('Messi OR lady'))
-    # print(inc.search('Call AND NOT phone'))
-    # inc.save('data/incidence_matrix.csv')
-
-    inc2 = IncidenceMatrix.load('data/incidence_matrix.csv')
-    # print(inc2.search('Messi OR lady'))
-    print(inc2.search('love AND NOT(cars OR girl OR man OR dog)'))
-

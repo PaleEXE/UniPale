@@ -13,8 +13,8 @@
 #         f.truncate()
 
 if __name__ == '__main__':
-    from inverted_index import InvertedIndex
-    from incidence_matrix import IncidenceMatrix
+    from search_engines.inverted_index import InvertedIndex
+    from search_engines.incidence_matrix import IncidenceMatrix
 
     inc = IncidenceMatrix.load('data/incidence_matrix.csv')
     inv = InvertedIndex.load('data/inverted_index.json')

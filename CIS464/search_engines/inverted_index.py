@@ -1,7 +1,7 @@
 import glob
 import json
 
-from utils import *
+from .utils import *
 
 
 class InvertedIndex:
@@ -90,7 +90,7 @@ class InvertedIndex:
                 result.append(i)
                 continue
 
-            p1 += 1 if p1 < len(list1) -1 else 0
+            p1 += 1 if p1 < len(list1) - 1 else 0
 
         return result
 
@@ -146,16 +146,3 @@ class InvertedIndex:
         obj.index = data['index']
 
         return obj
-
-
-if __name__ == '__main__':
-    # ivn = InvertedIndex.from_folder('../pale_ir/songs/')
-    # print(ivn.search('love AND cars'))
-    # print(ivn.search('Messi OR lady'))
-    # print(ivn.search('Call AND NOT phone'))
-    # ivn.save('data/inverted_index.json')
-    ivn2 = InvertedIndex.load('data/inverted_index.json')
-    # print(ivn2.search('Call'))
-    print(ivn2.search('love AND NOT(cars OR girl OR man OR dog)'))
-
-
