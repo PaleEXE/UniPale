@@ -35,7 +35,6 @@ class InvertedIndex:
                 if self.index[term][-1] != doc_num:
                     self.index[term].append(doc_num)
 
-        print(self.index['girl'])
 
     @staticmethod
     def intersection(list1: list, list2: list) -> list:
