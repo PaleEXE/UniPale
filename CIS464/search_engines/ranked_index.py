@@ -27,39 +27,18 @@ class RankedIndex(InvertedIndex):
         for term in query_list:
             term = normalize(term)
             for doc_num, count in self.index.get(term, []):
-                if count == 0:
-                    continue
-
-                scores[doc_num][1] += round(self.score(term, doc_num), 5)
+                scores[doc_num][1] += self.score(term, count)
 
         scores = [score for score in scores if score[1] != 0]
         scores.sort(key=lambda x: x[1], reverse=True)
         return scores
 
-    @staticmethod
-    def binary_search(list0: list, num: int) -> int:
-        low = 0
-        high = len(list0) - 1
-
-        while low <= high:
-            mid = (high + low) // 2
-            if list0[mid][0] < num:
-                high = mid - 1
-            elif list0[mid][0] > num:
-                low = mid + 1
-            else:
-                return mid
-
-        return -1
-
-    def score(self, term: str, doc_num: int) -> float:
+    def score(self, term: str, count: int) -> float:
         if term not in self.index:
             return 0
 
-        doc_position = RankedIndex.binary_search(self.index[term], doc_num)
-        tf = self.index[term][doc_position][1]
+        tf = math.log10(count) + 1 if count > 0 else 0
+        idf = math.log10(self.num_docs / len(self.index[term]))
 
-        idf = len(self.index[term])
-
-        w = (math.log10(tf) + 1) * math.log10(self.num_docs / idf)
+        w = tf * idf
         return w

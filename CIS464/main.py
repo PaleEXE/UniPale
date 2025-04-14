@@ -35,3 +35,4 @@ if __name__ == '__main__':
     inv.save('data/incidence_matrix.json')
     rnk.save('data/ranked_index.json')
 
+
