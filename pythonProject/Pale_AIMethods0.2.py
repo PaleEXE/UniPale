@@ -6,7 +6,6 @@ from icecream import ic
 
 
 class AIMethods(nx.Graph):
-
     def bfs(self, start_node=None):
         if start_node is None:
             start_node = list(self.nodes())[0]
