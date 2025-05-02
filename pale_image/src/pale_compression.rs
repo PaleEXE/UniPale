@@ -156,6 +156,7 @@ impl PaleImage {
                 row.push((count, EncodedPixelsCompact { color }));
             }
 
+            row.shrink_to_fit();
             pixels.push(row);
         }
 
