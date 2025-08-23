@@ -56,3 +56,4 @@ cargo-cache/
 
 # Keep JSON files tracked
 !*.json
+-e "Makefile\n*.mk" 
