@@ -1,9 +1,11 @@
-# Byte-compiled / optimized / DLL files
+# ================================
+# Python
+# ================================
 __pycache__/
 *.py[cod]
 *$py.class
 
-# Virtual environment
+# Virtual environments
 venv/
 .venv/
 
@@ -31,16 +33,20 @@ nohup.out
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints/
 
-# Operating system files
+# ================================
+# OS generated files
+# ================================
 .DS_Store
 Thumbs.db
 
-# Rust target directory
+# ================================
+# Rust
+# ================================
+# Target directory
 target/
 **/target/
-Cargo.lock  # Optional, remove if you want to track Cargo.lock for applications
 
-# Rust debug & build artifacts
+# Build artifacts
 *.rs.bk
 *.rlib
 *.d
@@ -50,10 +56,21 @@ Cargo.lock  # Optional, remove if you want to track Cargo.lock for applications
 *.out
 *.a
 
-# Rust dependency files
+# Cargo
 /.cargo/
 cargo-cache/
+Cargo.lock  # (optional, remove this line if you want to track it)
 
+# ================================
+# Makefiles
+# ================================
+Makefile
+**/Makefile
+*.mk
+**/*.mk
+
+# ================================
+# Exceptions
+# ================================
 # Keep JSON files tracked
 !*.json
--e "Makefile\n*.mk" 
