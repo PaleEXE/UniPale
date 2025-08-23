@@ -1,0 +1,2 @@
+*.mk linguist-detectable=false
+Makefile linguist-detectable=false
